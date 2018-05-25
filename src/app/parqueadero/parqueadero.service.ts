@@ -11,7 +11,7 @@ export class ParqueaderoService {
     constructor(private httpClient: HttpClient) { }
     
     cargarVehiculos(){
-        return this.httpClient.get('http://localhost:8080/parqueadero/vehiculo/').toPromise();
+        return this.httpClient.get('http://localhost:8080/parqueadero/vehiculo').toPromise();
     }
 
     ingresarVehiculo(vehiculo:Vehiculo){

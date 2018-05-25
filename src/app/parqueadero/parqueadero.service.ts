@@ -8,21 +8,22 @@ import { Vehiculo } from '../modelo/vehiculo';
     providedIn: 'root'
 })
 export class ParqueaderoService {
+    urlServidor:string = 'http://localhost:8080/parqueadero/';
     constructor(private httpClient: HttpClient) { }
     
-    cargarVehiculos(){
-        return this.httpClient.get('http://localhost:8080/parqueadero/vehiculo').toPromise();
+    obtenerRegistrosVehiculosIngresados(){
+        return this.httpClient.get(this.urlServidor+'vehiculo').toPromise();
     }
 
-    ingresarVehiculo(vehiculo:Vehiculo){
-        return this.httpClient.post<any>('http://localhost:8080/parqueadero/vehiculo/',vehiculo).toPromise();
+    guardarRegistroIngresoVehiculo(vehiculo:Vehiculo){
+        return this.httpClient.post<any>(this.urlServidor+'vehiculo/',vehiculo).toPromise();
     }
 
-    retirarVehiculo(placa){
-        return this.httpClient.delete('http://localhost:8080/parqueadero/vehiculo/'+placa).toPromise();
+    obtenerTiquete(placa){
+        return this.httpClient.get(this.urlServidor+'tiquete/'+placa).toPromise();
     }
 
-    consultarVehiculo(placa){
-        return this.httpClient.get('http://localhost:8080/parqueadero/vehiculo/'+placa).toPromise();
+    registrarSalidaVehiculo(placa){
+        return this.httpClient.delete(this.urlServidor+'vehiculo/'+placa).toPromise();
     }
 }

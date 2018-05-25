@@ -1,6 +1,78 @@
-<ul>
-	<li *ngFor="let parqueo of vehiculos"> 
-		{{parqueo.vehiculo.placa}} - {{parqueo.vehiculo.tipo}} - {{parqueo.fechaIngreso}}
-	</li>
-</ul>
-{{vehiculos.length}}
+
+<h1> Hola Mundo</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-4">
+			<form name="registrarVehiculoForm" id="registrarVehiculoForm" #registrarVehiculoForm="ngForm" novalidate>
+				<div class="form-group">
+					<label id="lblPlaca" for="inputPlaca">PLACA VEHICULO A INGRESAR:</label>
+					<input id="inputPlaca" type="text" [(ngModel)]="parqueoModelo.placa" name="placa" #placa="ngModel" class="form-control" id="placaIngreso" required minlength="5">
+					<div *ngIf="placa.invalid && placa.dirty" class="alert alert-danger">
+					<div *ngIf="placa.errors.required">
+						La placa es necesaria.
+					</div>
+					<div *ngIf="placa.errors.minlength">
+						La placa debe tener minimo 6 caracteres.
+					</div>
+					</div>
+				</div>
+			
+				<div class="form-group">
+					<label for="tipo">TIPO DE VEHICULO:</label>
+					<select id="ingresarTipoVehiculo" class="form-control" [(ngModel)]="parqueoModelo.tipo" name="tipo" required>
+					<option id="tipoCarro" (value)="CARRO">CARRO</option>
+					<option id="tipoMoto" (value)="MOTO">MOTO</option>
+					</select>
+				</div>
+			
+				<div *ngIf="(parqueoModelo.tipo == 'MOTO')"  class="form-group">
+					<label for="cilindraje">CILINDRAJE VEHICULO:</label>
+					<input id="ingresarcilindraje" type="number" [(ngModel)]="parqueoModelo.cilindraje" name="cilindraje" class="form-control" id="cilindraje">
+				</div>
+			
+				<button id="ingresarBoton" (click)="registrarVehiculoForm.valid && registrarVehiculo()" class="btn btn-success" style="margin: 3%">Ingresar Vehiculo</button>
+			
+				</form>
+		</div>
+		<div class="col-8">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>PLACA</th>
+						<th>TIPO</th>
+						<th>FEHCA DE INGRESO</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let parqueo of vehiculos" [ngClass]="{'bg-warning': parqueo.vehiculo.tipo == 'MOTO', 'bg-success': parqueo.vehiculo.tipo =='CARRO'}">
+						<th>{{parqueo.vehiculo.placa}}</th>
+						<td>{{parqueo.vehiculo.tipo}}</td>
+						<td>{{parqueo.fechaIngreso}}</td>
+						<td><button class="btn btn-lg btn-primary" id="{{parqueo.vehiculo.placa}}" (click)="abrirModalTiquete(resultadoTiquete, parqueo.vehiculo.placa)"> Generar Tiquete</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<ng-template #resultadoTiquete let-c="close" let-d="dismiss">
+		<div class="modal-header">
+			<h4 class="modal-title">Resultado Tiquete</h4>
+			<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+				<span aria-hidden="true"> &times; </span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<p>placa : {{vehiculoConsultado.placa}}</p>
+			<p>tipo : {{vehiculoConsultado.tipo}}</p>
+			<p>Cilindraje : {{vehiculoConsultado.cilindraje}}</p>
+			<p>Fecha de Ingreso : {{vehiculoConsultado.fechaIngreso}}</p>
+			<p>Fecha de Salida : {{vehiculoConsultado.fechaSalida}}</p>
+			<p>Cobro : {{vehiculoConsultado.cobro}}</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-outline-dark" (click)="c('Close click')"> CerrarBoton</button>
+		</div>
+	</ng-template><hr>
+
+	<pre>{{closeResult}}</pre>
+</div>
